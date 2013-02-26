@@ -2,6 +2,7 @@ package com.pino.smsparser;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public static ListView list;
@@ -55,6 +57,8 @@ public class MainActivity extends Activity {
 			case R.id.menu_dialog: {
 			// Show dialog here
 			//showDialog(1); // Deprecated, use instead: http://android-developers.blogspot.in/2012/05/using-dialogfragments.html
+				DialogFragment dlg = new TotalDlg();
+				dlg.show(getFragmentManager(), "totaldlg");
 				break;
 			}
 			case R.id.menu_drop : {
@@ -108,4 +112,45 @@ public class MainActivity extends Activity {
 			list.setAdapter(a);
 			a.notifyDataSetChanged();
 	}
+
+	public void onFinishTotalDlg(String string) {
+		Toast.makeText(this, string, Toast.LENGTH_LONG).show();
+	}	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
