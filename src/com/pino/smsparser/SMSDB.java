@@ -34,6 +34,8 @@ public final class SMSDB {
 	          + "time text,"
 	          + "type integer,"
 	          + "money text" + ");");
+	      
+	      db.execSQL("insert into sms_table values (1,'','Total',2,0.0)");
 	    }
 
 	    @Override
@@ -57,5 +59,9 @@ public final class SMSDB {
 	
 	public Cursor getTransactions() {		
 		return DB.query("sms_table", null, null, null, null, null, null);
+	}
+	
+	public void flushDatabase() {
+		DBH.onUpgrade(DB, 0, 1);
 	}
 }

@@ -3,6 +3,8 @@
 
     <string name="app_name">SMSparser</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
+    <string name="menu_sample">Add sample data</string>
+    <string name="menu_drop">Flush database</string>
+    <string name="menu_dialog">Show dialog</string>
 
 </resources>
