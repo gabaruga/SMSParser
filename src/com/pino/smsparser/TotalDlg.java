@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-public class TotalDlg extends android.app.DialogFragment implements OnEditorActionListener {
+public class TotalDlg extends android.support.v4.app.DialogFragment implements OnEditorActionListener {
 	private EditText edit;
 	
 	public TotalDlg() {
@@ -34,7 +34,7 @@ public class TotalDlg extends android.app.DialogFragment implements OnEditorActi
 	@Override
 	public boolean onEditorAction(TextView edit, int action, KeyEvent event) {
 		if (action == EditorInfo.IME_ACTION_DONE) {
-			MainActivity activity = (MainActivity) getActivity();
+			MainActivity  activity = (MainActivity)getActivity();			
             activity.onFinishTotalDlg(edit.getText().toString());
             this.dismiss();
             return true;

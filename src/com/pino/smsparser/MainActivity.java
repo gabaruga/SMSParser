@@ -1,19 +1,20 @@
 package com.pino.smsparser;
 
-import android.os.Bundle;
-import android.app.Activity;
-import android.app.DialogFragment;
+
 import android.content.Context;
 import android.database.Cursor;
-import android.widget.SimpleCursorAdapter;
-import android.widget.SimpleCursorAdapter.ViewBinder;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 	public static ListView list;
 	public static SMSDB smsdb;
 	public static Context CNTXT;	
@@ -55,7 +56,7 @@ public class MainActivity extends Activity {
 			case R.id.menu_dialog: {
 				// Show dialog
 				DialogFragment dlg = new TotalDlg();
-				dlg.show(getFragmentManager(), "totaldlg");
+				dlg.show(getSupportFragmentManager(), "totaldlg");
 				break;
 			}
 			case R.id.menu_drop : {
