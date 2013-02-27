@@ -22,7 +22,7 @@ public class TotalDlg extends android.app.DialogFragment implements OnEditorActi
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.total_dlg, container);
 		edit = (EditText)view.findViewById(R.id.total);
-		getDialog().setTitle("Enter starting sum");
+		getDialog().setTitle("Enter baseline sum");
 		
 		edit.requestFocus();
 		getDialog().getWindow().setSoftInputMode(LayoutParams.SOFT_INPUT_STATE_VISIBLE);

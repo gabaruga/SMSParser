@@ -10,6 +10,9 @@ import android.util.Log;
 
 
 public class SmsReceiver extends BroadcastReceiver {
+	
+	// originating sms sender
+	private static final String ORG = "666";
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -26,7 +29,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 SmsMessage sms = SmsMessage.createFromPdu((byte[])smsExtra[i]);
                 
                 // check if sms was sent from the number we need
-                if (sms.getDisplayOriginatingAddress().toString() == "666") {
+                if (sms.getOriginatingAddress().equals(ORG)) {
                 	Log.d("pino", "Got a message");
                 	
 	                String body = sms.getMessageBody().toString();

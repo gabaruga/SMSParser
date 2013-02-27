@@ -5,29 +5,27 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
-import android.util.Log;
+import android.widget.SimpleCursorAdapter;
+import android.widget.SimpleCursorAdapter.ViewBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public static ListView list;
 	public static SMSDB smsdb;
-	private static Context CNTXT;
+	public static Context CNTXT;	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		CNTXT = this;		
-		list = (ListView)findViewById(R.id.list);		
-		smsdb = new SMSDB(CNTXT);		
+		CNTXT = this;
+		list = (ListView)findViewById(R.id.list);
+		smsdb = new SMSDB(CNTXT);
 		updateList();
 	}
 
@@ -61,7 +59,7 @@ public class MainActivity extends Activity {
 				break;
 			}
 			case R.id.menu_drop : {
-				// FLush database
+				// Flush database
 				smsdb.flushDatabase();	
 				updateList();
 				break;
@@ -74,8 +72,6 @@ public class MainActivity extends Activity {
 	public static void updateList() {
 			Cursor cur = smsdb.getTransactions();
 			
-			Log.d("pino", Integer.toString(cur.getCount()));
-			
 			String[] from = {"date", "time", "type", "money"};
 			int[] to = {R.id.date, R.id.time, R.id.coins, R.id.money};
 			
@@ -85,23 +81,29 @@ public class MainActivity extends Activity {
 				public boolean setViewValue(View arg0, Cursor arg1, int arg2) {
 					if (arg0.getId() == R.id.coins) {
 						ImageView v = (ImageView)arg0;
-						if (arg1.getInt(arg2) == 0) {
-							// Decrease							
-							v.setImageResource(R.drawable.coins_delete);
-						}
-						else if (arg1.getInt(arg2) == 1) {
-							// Increase
-							v.setImageResource(R.drawable.coins_add);							
-						}
-						else if (arg1.getInt(arg2) == 2) {
-							// Total
-							v.setImageResource(R.drawable.coins);					
-						}
-						else {
-							// Undefined, don't touch at all
-							//arg0.setBackgroundColor(0xff000000);
-						}
 						
+						switch (arg1.getInt(arg2)) {
+							case SMSDB.TR_DECR: {
+								// Decrease							
+								v.setImageResource(R.drawable.coins_delete);
+								break;
+							}
+							case SMSDB.TR_INCR: {
+								// Increase
+								v.setImageResource(R.drawable.coins_add);
+								break;
+							}						
+							case SMSDB.TR_TOTL: {
+								// Total
+								v.setImageResource(R.drawable.coins);
+								break;
+							}
+							case SMSDB.TR_BASE: {
+								// Base
+								v.setImageResource(R.drawable.coins);
+								break;
+							}
+						}
 						return true;
 					}
 					
@@ -113,7 +115,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void onFinishTotalDlg(String string) {
-		Toast.makeText(this, string, Toast.LENGTH_LONG).show();
+		smsdb.setBaseline(Double.parseDouble(string));
+		updateList();
 	}	
 	
 }

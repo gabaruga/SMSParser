@@ -5,6 +5,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_sample">Add sample data</string>
     <string name="menu_drop">Flush database</string>
-    <string name="menu_dialog">Show dialog</string>
+    <string name="menu_dialog">Set baseline</string>
 
 </resources>
