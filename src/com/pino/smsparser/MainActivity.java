@@ -55,13 +55,13 @@ public class MainActivity extends Activity {
 				break;
 			}
 			case R.id.menu_dialog: {
-			// Show dialog here
-			//showDialog(1); // Deprecated, use instead: http://android-developers.blogspot.in/2012/05/using-dialogfragments.html
+				// Show dialog
 				DialogFragment dlg = new TotalDlg();
 				dlg.show(getFragmentManager(), "totaldlg");
 				break;
 			}
 			case R.id.menu_drop : {
+				// FLush database
 				smsdb.flushDatabase();	
 				updateList();
 				break;
@@ -86,8 +86,7 @@ public class MainActivity extends Activity {
 					if (arg0.getId() == R.id.coins) {
 						ImageView v = (ImageView)arg0;
 						if (arg1.getInt(arg2) == 0) {
-							// Decrease
-							//arg0.setBackgroundColor(0xffffcccc);
+							// Decrease							
 							v.setImageResource(R.drawable.coins_delete);
 						}
 						else if (arg1.getInt(arg2) == 1) {
@@ -118,39 +117,3 @@ public class MainActivity extends Activity {
 	}	
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
