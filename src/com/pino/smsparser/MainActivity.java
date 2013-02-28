@@ -6,28 +6,43 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter.ViewBinder;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 	public static ListView list;
 	public static SMSDB smsdb;
 	public static Context CNTXT;	
 	
+	ViewPager vp;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		CNTXT = this;
-		list = (ListView)findViewById(R.id.list);
+		CNTXT = getApplicationContext();
+		//list = (ListView) getView().findViewById(R.id.list);
 		smsdb = new SMSDB(CNTXT);
-		updateList();
+		
+		//Toast.makeText(CNTXT, "1: "+Integer.toString(list.getId()), Toast.LENGTH_LONG).show();
+		//updateList(); 
+		
+		SwipeAdapter swA = new SwipeAdapter();
+		vp = (ViewPager)findViewById(R.id.myfivepanelpager);
+		vp.setAdapter(swA);
+		vp.setCurrentItem(0);	
+		
 	}
 
 	@Override
@@ -36,6 +51,8 @@ public class MainActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
+	
+
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -71,6 +88,9 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public static void updateList() {
+			//list = (ListView) getView().findViewById(R.id.list);
+			Toast.makeText(CNTXT, Integer.toString(MainActivity.list.getId()), Toast.LENGTH_LONG).show();
+			
 			Cursor cur = smsdb.getTransactions();
 			
 			String[] from = {"date", "time", "type", "money"};
@@ -120,4 +140,46 @@ public class MainActivity extends FragmentActivity {
 		updateList();
 	}	
 	
+	// ----------------------- Swipe section ------------------------------------
+	public static class SwipeAdapter extends PagerAdapter {
+
+		@Override
+		public int getCount() {
+			// return a number of, ermmm, screens
+			return 2;
+		}
+
+		public Object instantiateItem(View collection, int position) {
+            LayoutInflater inflater = (LayoutInflater) collection.getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            int resId = 0;
+            View view = null;
+            switch (position) {
+            case 0:            	           	
+                resId = R.layout.activity_list;
+                view = inflater.inflate(resId, null);
+                ((ViewPager) collection).addView(view, 0);
+                list = (ListView) view.findViewById(R.id.list);
+                break;
+            case 1:            	
+                resId = R.layout.activity_plot;
+                view = inflater.inflate(resId, null);
+                ((ViewPager) collection).addView(view, 0);
+                break;
+            }
+            
+            return view;
+        }
+		
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+			// TODO Auto-generated method stub
+			return arg0 == ((View) arg1);
+		}
+		
+		@Override
+        public void destroyItem(View arg0, int arg1, Object arg2) {
+            ((ViewPager) arg0).removeView((View) arg2);
+        }
+	}
 }
