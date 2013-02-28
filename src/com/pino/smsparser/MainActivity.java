@@ -1,7 +1,9 @@
 package com.pino.smsparser;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -14,10 +16,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity {
 	public static ListView list;
@@ -31,18 +31,13 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		CNTXT = getApplicationContext();
-		//list = (ListView) getView().findViewById(R.id.list);
-		smsdb = new SMSDB(CNTXT);
-		
-		//Toast.makeText(CNTXT, "1: "+Integer.toString(list.getId()), Toast.LENGTH_LONG).show();
-		//updateList(); 
+		CNTXT = this;
+		smsdb = new SMSDB(CNTXT);	 
 		
 		SwipeAdapter swA = new SwipeAdapter();
 		vp = (ViewPager)findViewById(R.id.myfivepanelpager);
 		vp.setAdapter(swA);
-		vp.setCurrentItem(0);	
-		
+		vp.setCurrentItem(0);
 	}
 
 	@Override
@@ -51,8 +46,6 @@ public class MainActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-	
-
 	
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -88,9 +81,6 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public static void updateList() {
-			//list = (ListView) getView().findViewById(R.id.list);
-			Toast.makeText(CNTXT, Integer.toString(MainActivity.list.getId()), Toast.LENGTH_LONG).show();
-			
 			Cursor cur = smsdb.getTransactions();
 			
 			String[] from = {"date", "time", "type", "money"};
@@ -154,17 +144,27 @@ public class MainActivity extends FragmentActivity {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             int resId = 0;
             View view = null;
+            Activity a = (Activity)CNTXT;
+            
             switch (position) {
             case 0:            	           	
                 resId = R.layout.activity_list;
                 view = inflater.inflate(resId, null);
                 ((ViewPager) collection).addView(view, 0);
-                list = (ListView) view.findViewById(R.id.list);
+                list = (ListView) view.findViewById(R.id.list);                
+                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                updateList();
                 break;
             case 1:            	
                 resId = R.layout.activity_plot;
                 view = inflater.inflate(resId, null);
                 ((ViewPager) collection).addView(view, 0);
+                
+                // this shit is working not as expected
+                a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                
+                // https://code.google.com/p/afreechart/
+                
                 break;
             }
             
@@ -173,7 +173,6 @@ public class MainActivity extends FragmentActivity {
 		
 		@Override
 		public boolean isViewFromObject(View arg0, Object arg1) {
-			// TODO Auto-generated method stub
 			return arg0 == ((View) arg1);
 		}
 		
